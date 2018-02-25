@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>404: Project not found</title>
+</head>
+<style>
+    .bg-warning {
+        background-color: hotpink !important;
+    }
+    .bg-error{
+        background-color: deeppink !important;
+    }
+</style>
+<body class="text-white bg-error">
+<nav class="navbar navbar-expand-lg navbar-light bg-warning">
+  <a class="navbar-brand" href="./">Oh man, Jeez</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Wow <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Look</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">There's so much pink</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="./code.html">Some of our code snippets</a>
+        </li>
+    </ul>
+  </div>
+</nav>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12"><h1>404: Project not found</h1></div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-4">
+            <div class="card bg-warning">
+                <div class="card-header h3">Daniel was insistent</div>
+                <div class="card-body card-text">
+                    he had some of his code here so he can be on the team so here it is:
+                    <pre>
+                        def print_board(board):
+
+	print "The board look like this: \n"
+
+	for i in range(3):
+		print " ",
+		for j in range(3):
+			if board[i*3+j] == 1:
+				print 'X',
+			elif board[i*3+j] == 0:
+				print 'O',	
+			elif board[i*3+j] != -1:
+				print board[i*3+j]-1,
+			else:
+				print ' ',
+			
+			if j != 2:
+				print " | ",
+		print
+		
+		if i != 2:
+			print "-----------------"
+		else: 
+			print 
+			
+def print_instruction():
+	print "Please use the following cell numbers to make your move"
+	print_board([2,3,4,5,6,7,8,9,10])
+
+
+def get_input(turn):
+
+	valid = False
+	while not valid:
+		try:
+			user = raw_input("Where would you like to place " + turn + " (1-9)? ")
+			user = int(user)
+			if user >= 1 and user <= 9:
+				return user-1
+			else:
+				print "That is not a valid move! Please try again.\n"
+				print_instruction()
+		except Exception as e:
+			print user + " is not a valid move! Please try again.\n"
+		
+def check_win(board):
+	win_cond = ((1,2,3),(4,5,6),(7,8,9),(1,4,7),(2,5,8),(3,6,9),(1,5,9),(3,5,7))
+	for each in win_cond:
+		try:
+			if board[each[0]-1] == board[each[1]-1] and board[each[1]-1] == board[each[2]-1]:
+				return board[each[0]-1]
+		except:
+			pass
+	return -1
+
+def quit_game(board,msg):
+	print_board(board)
+	print msg
+	quit()
+
+def main():
+	
+	# setup game
+	# alternate turns
+	# check if win or end
+	# quit and show the board
+	println("Good morning human. This is the weather for today:")
+	from weather import Weather
+	weather = Weather()
+
+	# Lookup WOEID via http://weather.yahoo.com.
+
+	lookup = weather.lookup(560743)
+	condition = lookup.condition()
+	print(condition.text())
+	
+	# Lookup via location name.
+
+	location = weather.lookup_by_location('dublin')
+	condition = location.condition()
+	print(condition.text())
+
+	# Get weather forecasts for the upcoming days.
+
+	forecasts = location.forecast()
+	for forecast in forecasts:
+    	print(forecast.text())
+    	print(forecast.date())
+    	print(forecast.high())
+    	print(forecast.low())
+		print_instruction()
+
+	board = []
+	for i in range(9):
+		board.append(-1)
+
+	win = False
+	move = 0
+	while not win:
+
+		# print board
+		print_board(board)
+		print "Turn number " + str(move+1)
+		if move % 2 == 0:
+			turn = 'X'
+		else:
+			turn = 'O'
+
+		# get user input
+		user = get_input(turn)
+		while board[user] != -1:
+			print "Invalid move! Cell already taken. Please try again.\n"
+			user = get_input(turn)
+		board[user] = 1 if turn == 'X' else 0
+
+		# advance move and check for end game
+		move += 1
+		if move > 4:
+			winner = check_win(board)
+			if winner != -1:
+				out = "The winner is " 
+				out += "X" if winner == 1 else "O" 
+				out += " :)"
+				quit_game(board,out)
+			elif move == 9:
+				quit_game(board,"No winner :(")
+
+def main()
+	println("Hi User! What's your name?")
+	name = input()
+	println("Good morning " + name + " Would you like to play tic tac toe or listen about the weather today? Insert 1 for weather, or 2 for some fun tic-tac-toe")
+	decision = input()
+	if decision == "1":
+		weather()
+	elif decision == "2":
+		ticTacToe()
+
+	
+#!/usr/bin/env python
+# encoding: utf-8
+
+import sys
+from argparse import ArgumentParser
+from xml.dom import minidom
+try:
+	from urllib.request import urlopen
+	from urllib.parse import urlencode
+except ImportError:
+	from urllib import urlopen, urlencode
+
+
+API_URL = "http://www.google.com/ig/api?"
+
+if __name__ == "__main__":
+	main()
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
